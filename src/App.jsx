@@ -13,14 +13,14 @@ import Divider from "@mui/material/Divider";
 
 const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
 
-const CreateButton = ({ label }) => {
+const CreateButton = ({ label, onCreateButtonClick }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
     setIsClicked(!isClicked);
     console.log(isClicked);
   }
-  return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
+  return <div><Button variant="contained" onClick={onCreateButtonClick}>{label}</Button></div>
 }
 
 const DeleteButton = ({ label }) => {
@@ -74,6 +74,22 @@ const initialList = [
 
 const App = () => {
   const [list, setList] = React.useState(initialList);
+  const [tasks1, setTasks1] = useState(Array(0).fill(null));
+
+  function handleCreateButtonClick() {
+    const nextTasks = tasks1.slice();
+    const nextId = findNewId();
+    nextTasks.push({name: 'Empty', id: nextTasks.length + 1,})
+    setTasks1(nextTasks);
+    console.log(nextTasks);
+    console.log("hi");
+  }
+
+  function findNewId() {
+    const ids = tasks.map(({id}) => id);
+    const nextId = Math.max(...ids) + 1;
+    return nextId;
+  }
 
   function handleRemove(id) {
     const newList = list.filter((item) => item.id !== id);
@@ -85,13 +101,13 @@ const App = () => {
     <>
     <div className="App"> 
         <br />
-        <CreateButton label={'Create'}/>
+        <CreateButton label={'Create'} onCreateButtonClick={() => handleCreateButtonClick()} />
         <br />
         <DeleteButton label={'Delete'}/>
         <br />
         <CustomList />
         <List list={list} onClick={handleRemove} />
-        {tasks.map(function(task) {
+        {tasks1.map(function(task) {
           return (
             <div key={task.id}>
               <p>Task Name: {task.name}</p>
