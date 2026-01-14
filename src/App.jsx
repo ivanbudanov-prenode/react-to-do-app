@@ -11,6 +11,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 
+const CustomListItem = ( { label, onListItemClick }) => {
+  return <div>
+    <ListItem disablePadding>
+      <ListItemButton onClick={onListItemClick}>
+        <ListItemText
+          primary={ label } />
+      </ListItemButton>
+    </ListItem>
+  </div>
+}
+
 const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
 
 const CreateButton = ({ label, onCreateButtonClick }) => {
@@ -85,6 +96,10 @@ const App = () => {
     console.log("hi");
   }
 
+  function handleListItemClick(i) {
+    console.log("hey");
+  }
+
   function findNewId() {
     const ids = tasks.map(({id}) => id);
     const nextId = Math.max(...ids) + 1;
@@ -110,12 +125,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText
-                  primary={ task.name } />
-              </ListItemButton>
-            </ListItem>
+            <CustomListItem label={task.name} onListItemClick={() => handleListItemClick(5)} />
             </div>
           )
         })}
