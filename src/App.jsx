@@ -12,6 +12,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 
 const CustomListItem = ( { label, onListItemClick }) => {
+  /*const [isEditing, setIsEditing] = useState(false);*/
+
   return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
@@ -86,18 +88,21 @@ const initialList = [
 const App = () => {
   const [list, setList] = React.useState(initialList);
   const [tasks1, setTasks1] = useState(Array(0).fill(null));
+  const [isEditing, setIsEditing] = useState(false);
 
   function handleCreateButtonClick() {
     const nextTasks = tasks1.slice();
     const nextId = findNewId();
-    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: false})
+    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: isEditing})
     setTasks1(nextTasks);
     console.log(nextTasks);
     console.log("hi");
   }
 
   function handleListItemClick(i) {
-    console.log(i);
+    console.log(tasks1[i-1]);
+    
+    setIsEditing(!isEditing);
   }
 
   function findNewId() {
