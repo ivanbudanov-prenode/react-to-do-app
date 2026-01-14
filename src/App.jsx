@@ -97,7 +97,7 @@ const App = () => {
   }
 
   function handleListItemClick(i) {
-    console.log("hey");
+    console.log(i);
   }
 
   function findNewId() {
@@ -125,7 +125,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <CustomListItem label={task.name} onListItemClick={() => handleListItemClick(5)} />
+            <CustomListItem label={task.name} onListItemClick={() => handleListItemClick(task.id)} />
             </div>
           )
         })}
