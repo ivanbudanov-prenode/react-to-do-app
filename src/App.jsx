@@ -79,7 +79,7 @@ const App = () => {
   function handleCreateButtonClick() {
     const nextTasks = tasks1.slice();
     const nextId = findNewId();
-    nextTasks.push({name: 'Empty', id: nextTasks.length + 1,})
+    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: false})
     setTasks1(nextTasks);
     console.log(nextTasks);
     console.log("hi");
@@ -109,9 +109,13 @@ const App = () => {
         <List list={list} onClick={handleRemove} />
         {tasks1.map(function(task) {
           return (
-            <div key={task.id}>
-              <p>Task Name: {task.name}</p>
-
+            <div>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText
+                  primary={ task.name } />
+              </ListItemButton>
+            </ListItem>
             </div>
           )
         })}
