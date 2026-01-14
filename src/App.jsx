@@ -11,6 +11,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 
+const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
+
 const CreateButton = ({ label }) => {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -88,7 +90,16 @@ const App = () => {
         <DeleteButton label={'Delete'}/>
         <br />
         <CustomList />
-        <List list={list} onClick={handleRemove} />;
+        <List list={list} onClick={handleRemove} />
+        {tasks.map(function(task) {
+          return (
+            <div key={task.id}>
+              <p>Task Name: {task.name}</p>
+
+            </div>
+          )
+        })}
+        
 
     </div>
 
