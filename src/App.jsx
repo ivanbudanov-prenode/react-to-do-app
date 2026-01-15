@@ -13,6 +13,8 @@ import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from ".//Home";
+import Tasks from "./Tasks";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, handleEnterDown} ) => {
   return <div>
@@ -156,21 +158,12 @@ const App = () => {
     setTasks1(nextTasks);
   }
 
-  /*function isCorrectId() {
-    if()
-  }*/
-
   function handleTaskClick(id) {
     let result = tasks1.find(obj => obj.id === id);
-    /*const taskIndex = tasks1.findIndex(x => x.id === id);*/
     setEditingTaskId(result.id);
     console.log(result.id);
     console.log("cheese");
   }
-  /*function handleTaskClick(i) {
-    setEditingTaskId(tasks1[i-1].id);
-    console.log(tasks1[i-1].id);
-  }*/
 
   function handleCheckboxClick(id) {
     let result = tasks1.find(obj => obj.id === id);
@@ -181,11 +174,6 @@ const App = () => {
     setTasks1(nextTasks);
     console.log(nextTasks);
   }
-  /*function handleCheckboxClick(i) {
-    console.log(tasks1[i-1].id);
-    const nextTasks = tasks1.slice();
-    setTasks1(nextTasks);
-  }*/
 
   function findNewId() {
     const ids = tasks.map(({id}) => id);
@@ -207,7 +195,27 @@ const App = () => {
   }
 
   return (
-    <Router>
+    
+    <>
+    <div className="App"> 
+      <Router>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/tasks">Tasks</Link>
+      </li>
+      <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tasks" element={<Tasks />} />
+      </Routes>
+    </Router>
+
+    </div>
+        
+    </>
+  );
+  /*return (
     <>
     <div className="App"> 
         <br />
@@ -230,8 +238,7 @@ const App = () => {
     </div>
         
     </>
-    </Router>
-  );
+  );*/
 };
 
 
