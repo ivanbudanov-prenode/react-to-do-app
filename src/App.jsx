@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, handleEnterDown} ) => {
   return <div>
@@ -75,13 +76,13 @@ const CreateButton = ({ label, onCreateButtonClick }) => {
   return <div><Button variant="contained" onClick={onCreateButtonClick}>{label}</Button></div>
 }
 
-const DeleteButton = ({ label }) => {
+const DeleteButton = ({ label, onDeleteButtonClick }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
     setIsClicked(!isClicked);
   }
-  return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
+  return <div><Button variant="contained" onClick={onDeleteButtonClick}>{label}</Button></div>
 }
 
 const MarkCompletedButton = ({ label }) => {
@@ -148,6 +149,13 @@ const App = () => {
     console.log("hi");
   }
 
+  function handleDeleteButtonClick() {
+    let nextTasks = tasks1.slice();
+    nextTasks = nextTasks.filter(task => task.isChecked === false);
+    console.log(nextTasks);
+    setTasks1(nextTasks);
+  }
+
   /*function isCorrectId() {
     if()
   }*/
@@ -199,16 +207,16 @@ const App = () => {
   }
 
   return (
+    <Router>
     <>
     <div className="App"> 
         <br />
         <CreateButton label={'Create'} onCreateButtonClick={() => handleCreateButtonClick()} />
         <br />
-        <DeleteButton label={'Delete'}/>
+        <DeleteButton label={'Delete'} onDeleteButtonClick={() => handleDeleteButtonClick()} />
         <br />
         <MarkCompletedButton label={'Mark Completed'}/>
         <br />
-        <CustomCheckbox />
         <List list={list} onClick={handleRemove} />
         {tasks1.map(function(task) {
           return (
@@ -220,8 +228,9 @@ const App = () => {
         
 
     </div>
-
+        
     </>
+    </Router>
   );
 };
 
