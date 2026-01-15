@@ -13,16 +13,16 @@ import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 
-const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown} ) => {
+const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, handleEnterDown} ) => {
   return <div>
-    <CustomCheckbox />
+    <CustomCheckbox onCheckboxClick={onCheckboxClick} />
     <CustomListItem label={label} taskId={taskId} editingTaskId={editingTaskId} onListItemClick={onListItemClick} handleEnterDown={handleEnterDown} />
   </div>
 }
 
-const CustomCheckbox = () => {
+const CustomCheckbox = ( { onCheckboxClick}) => {
   return <div>
-    <Checkbox />
+    <Checkbox onClick={onCheckboxClick} />
   </div>
 }
 
@@ -141,19 +141,43 @@ const App = () => {
   function handleCreateButtonClick() {
     const nextTasks = tasks1.slice();
     const nextId = findNewId();
-    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: true})
+    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: true, isChecked: false})
     setEditingTaskId(nextTasks.length + 1);
     setTasks1(nextTasks);
     console.log(nextTasks);
     console.log("hi");
   }
 
-  function handleListItemClick(i) {
-    /*console.log(tasks1[i-1]);*/
+  /*function isCorrectId() {
+    if()
+  }*/
+
+  function handleTaskClick(id) {
+    let result = tasks1.find(obj => obj.id === id);
+    /*const taskIndex = tasks1.findIndex(x => x.id === id);*/
+    setEditingTaskId(result.id);
+    console.log(result.id);
+    console.log("cheese");
+  }
+  /*function handleTaskClick(i) {
     setEditingTaskId(tasks1[i-1].id);
     console.log(tasks1[i-1].id);
-    setIsEditing(!isEditing);
+  }*/
+
+  function handleCheckboxClick(id) {
+    let result = tasks1.find(obj => obj.id === id);
+    /*const taskIndex = tasks1.findIndex(x => x.id === id);*/
+    setEditingTaskId(result.id);
+    console.log(result.id);
+
+    const nextTasks = tasks1.slice();
+    setTasks1(nextTasks);
   }
+  /*function handleCheckboxClick(i) {
+    console.log(tasks1[i-1].id);
+    const nextTasks = tasks1.slice();
+    setTasks1(nextTasks);
+  }*/
 
   function findNewId() {
     const ids = tasks.map(({id}) => id);
@@ -189,7 +213,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
+            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} handleEnterDown={() => handleEnterDown()} />
             </div>
           )
         })}
