@@ -14,12 +14,25 @@ import TextField from '@mui/material/TextField';
 
 const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown }) => {
   /*const [isEditing, setIsEditing] = useState(false);*/
+  const [currentLabel, setCurrentLabel] = useState(label);
+
+  const [state, setState] = useState("");
+  const handleChange = (event) => {
+    setState(event.target.value);
+  };
+
+
+  /*function handleEnterDown2() {
+    newLabel = 
+    setCurrentLabel
+  }*/
+
   if(taskId == editingTaskId) {
   return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
-        <TextField onKeyDown={(e) => (e.key == "Enter" ? handleEnterDown(): null)} 
-          id={ label } />
+        <TextField onChange={(e) => handleChange(e)} onKeyDown={(e) => (e.key == "Enter" ? handleEnterDown(): null)} 
+          value={ state } />
       </ListItemButton>
     </ListItem>
   </div>
@@ -29,7 +42,7 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handle
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
         <ListItemText
-          primary={ label } />
+          primary={ state } />
       </ListItemButton>
     </ListItem>
   </div>
