@@ -13,10 +13,10 @@ import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 
-const TaskWithCheckbox = () => {
+const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown} ) => {
   return <div>
     <CustomCheckbox />
-    <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
+    <CustomListItem label={label} taskId={taskId} editingTaskId={editingTaskId} onListItemClick={onListItemClick} handleEnterDown={handleEnterDown} />
   </div>
 }
 
@@ -189,7 +189,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
+            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
             </div>
           )
         })}
