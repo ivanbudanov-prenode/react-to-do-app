@@ -14,10 +14,10 @@ import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 
-const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, handleEnterDown} ) => {
+const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
   return <div>
     <CustomCheckbox onCheckboxClick={onCheckboxClick} />
-    <CustomListItem label={label} taskId={taskId} editingTaskId={editingTaskId} onListItemClick={onListItemClick} handleEnterDown={handleEnterDown} />
+    <CustomListItem label={label} taskId={taskId} editingTaskId={editingTaskId} onListItemClick={onListItemClick} onEnterDown={onEnterDown} />
   </div>
 }
 
@@ -27,11 +27,13 @@ const CustomCheckbox = ( { onCheckboxClick}) => {
   </div>
 }
 
-const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown }) => {
+const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnterDown }) => {
   /*const [isEditing, setIsEditing] = useState(false);*/
   const [currentLabel, setCurrentLabel] = useState(label);
 
   const [state, setState] = useState("");
+  const [name, setName] = useState("");
+  
   const handleChange = (event) => {
     setState(event.target.value);
   };
@@ -46,7 +48,7 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handle
   return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
-        <TextField onChange={(e) => handleChange(e)} onKeyDown={(e) => (e.key == "Enter" ? handleEnterDown(): null)} 
+        <TextField onChange={(e) => handleChange(e)} onKeyDown={(e) => (e.key == "Enter" ? onEnterDown({ state }): null)} 
           value={ state } />
       </ListItemButton>
     </ListItem>
@@ -185,12 +187,28 @@ const Tasks = () => {
     setList(newList);
   }
 
-  function handleEnterDown() {
-    console.log("ham");
-    const nextTasks = tasks1.slice();
+  const handleEnterDown = (id, newName) => {
     setEditingTaskId(0);
+    
+    let result = tasks1.find(obj => obj.id === id);
+    const taskIndex = tasks1.findIndex(x => x.id === id);
+
+    let nextTasks = tasks1.slice();
+    nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setTasks1(nextTasks);
+    console.log(nextTasks);
   }
+  /*function handleEnterDown(id, newName) {
+    setEditingTaskId(0);
+    
+    let result = tasks1.find(obj => obj.id === id);
+    const taskIndex = tasks1.findIndex(x => x.id === id);
+
+    let nextTasks = tasks1.slice();
+    nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
+    setTasks1(nextTasks);
+    console.log(nextTasks);
+  }*/
 
   return (
     <div> 
@@ -205,7 +223,7 @@ const Tasks = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} handleEnterDown={() => handleEnterDown()} />
+            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
             </div>
           )
         })}
