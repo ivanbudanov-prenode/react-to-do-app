@@ -70,6 +70,15 @@ const DeleteButton = ({ label }) => {
   return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
 }
 
+const MarkCompletedButton = ({ label }) => {
+  const [isClicked, setIsClicked] = useState(false);
+
+  function handleClick() {
+    setIsClicked(!isClicked);
+  }
+  return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
+}
+
 const CustomList = () => {
   return <div>
     <List>
@@ -159,7 +168,8 @@ const App = () => {
         <br />
         <DeleteButton label={'Delete'}/>
         <br />
-        <CustomList />
+        <MarkCompletedButton label={'Mark Completed'}/>
+        <br />
         <List list={list} onClick={handleRemove} />
         {tasks1.map(function(task) {
           return (
