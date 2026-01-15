@@ -11,6 +11,20 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+
+const TaskWithCheckbox = () => {
+  return <div>
+    <CustomCheckbox />
+    <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
+  </div>
+}
+
+const CustomCheckbox = () => {
+  return <div>
+    <Checkbox />
+  </div>
+}
 
 const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown }) => {
   /*const [isEditing, setIsEditing] = useState(false);*/
@@ -170,6 +184,7 @@ const App = () => {
         <br />
         <MarkCompletedButton label={'Mark Completed'}/>
         <br />
+        <CustomCheckbox />
         <List list={list} onClick={handleRemove} />
         {tasks1.map(function(task) {
           return (
