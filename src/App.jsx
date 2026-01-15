@@ -13,7 +13,7 @@ import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from ".//Home";
+import Home from "./Home";
 import Tasks from "./Tasks";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, handleEnterDown} ) => {
