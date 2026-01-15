@@ -166,12 +166,12 @@ const App = () => {
 
   function handleCheckboxClick(id) {
     let result = tasks1.find(obj => obj.id === id);
-    /*const taskIndex = tasks1.findIndex(x => x.id === id);*/
-    setEditingTaskId(result.id);
-    console.log(result.id);
+    const taskIndex = tasks1.findIndex(x => x.id === id);
 
-    const nextTasks = tasks1.slice();
+    let nextTasks = tasks1.slice();
+    nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setTasks1(nextTasks);
+    console.log(nextTasks);
   }
   /*function handleCheckboxClick(i) {
     console.log(tasks1[i-1].id);
