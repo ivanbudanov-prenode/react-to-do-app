@@ -10,11 +10,22 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import TextField from '@mui/material/TextField';
 
-const CustomListItem = ( { label, onListItemClick }) => {
+const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick }) => {
   /*const [isEditing, setIsEditing] = useState(false);*/
-
+  if(taskId == editingTaskId) {
   return <div>
+    <ListItem disablePadding>
+      <ListItemButton onClick={onListItemClick}>
+        <TextField
+          id={ label } />
+      </ListItemButton>
+    </ListItem>
+  </div>
+  }
+  else {
+    return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
         <ListItemText
@@ -22,6 +33,7 @@ const CustomListItem = ( { label, onListItemClick }) => {
       </ListItemButton>
     </ListItem>
   </div>
+  }
 }
 
 const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
@@ -88,20 +100,22 @@ const initialList = [
 const App = () => {
   const [list, setList] = React.useState(initialList);
   const [tasks1, setTasks1] = useState(Array(0).fill(null));
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingTaskId, setEditingTaskId] = useState(0);
 
   function handleCreateButtonClick() {
     const nextTasks = tasks1.slice();
     const nextId = findNewId();
-    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: isEditing})
+    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: true})
+    setEditingTaskId(nextTasks.length + 1);
     setTasks1(nextTasks);
     console.log(nextTasks);
     console.log("hi");
   }
 
   function handleListItemClick(i) {
-    console.log(tasks1[i-1]);
-    
+    /*console.log(tasks1[i-1]);*/
+    setEditingTaskId(tasks1[i-1].id);
+    console.log(tasks1[i-1].id);
     setIsEditing(!isEditing);
   }
 
@@ -130,7 +144,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <CustomListItem label={task.name} onListItemClick={() => handleListItemClick(task.id)} />
+            <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} />
             </div>
           )
         })}
