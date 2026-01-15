@@ -48,7 +48,7 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
   return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
-        <TextField onChange={(e) => handleChange(e)} onKeyDown={(e) => (e.key == "Enter" ? onEnterDown({ state }): null)} 
+        <TextField onChange={(e) => handleChange(e)} onKeyDown={(e) => (e.key == "Enter" ? onEnterDown(state): null)} 
           value={ state } />
       </ListItemButton>
     </ListItem>
