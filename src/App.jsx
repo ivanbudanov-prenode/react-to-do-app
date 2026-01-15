@@ -133,6 +133,9 @@ const App = () => {
 
   function handleEnterDown() {
     console.log("ham");
+    const nextTasks = tasks1.slice();
+    setEditingTaskId(0);
+    setTasks1(nextTasks);
   }
 
   return (
