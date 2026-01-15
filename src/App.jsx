@@ -12,13 +12,13 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 
-const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick }) => {
+const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, handleEnterDown }) => {
   /*const [isEditing, setIsEditing] = useState(false);*/
   if(taskId == editingTaskId) {
   return <div>
     <ListItem disablePadding>
       <ListItemButton onClick={onListItemClick}>
-        <TextField
+        <TextField onKeyDown={(e) => (e.key == "Enter" ? handleEnterDown(): null)} 
           id={ label } />
       </ListItemButton>
     </ListItem>
@@ -131,6 +131,10 @@ const App = () => {
     setList(newList);
   }
 
+  function handleEnterDown() {
+    console.log("ham");
+  }
+
   return (
     <>
     <div className="App"> 
@@ -144,7 +148,7 @@ const App = () => {
         {tasks1.map(function(task) {
           return (
             <div>
-            <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} />
+            <CustomListItem label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleListItemClick(task.id)} handleEnterDown={() => handleEnterDown()} />
             </div>
           )
         })}
