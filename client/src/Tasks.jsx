@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Component} from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 /*import Button from '@material-ui/core/Button'; */
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
@@ -13,6 +13,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import axios from "axios";
+
+const API = "http://localhost:3000/tasks";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
   return <div>
@@ -136,10 +139,28 @@ const initialList = [
   },
 ];
 
+/*type Task = {
+  name: string;
+  id: string;
+  isEditing: string;
+  isChecked: string;
+};*/
+
 const Tasks = () => {
   const [list, setList] = React.useState(initialList);
   const [tasks1, setTasks1] = useState(Array(0).fill(null));
   const [editingTaskId, setEditingTaskId] = useState(0);
+  /*const [data, setData] = useState<Task[]>([]);*/
+
+  /*useEffect(() => {
+  const fetchData = async () => {
+    const result = await axios(`${API}`);
+
+    setData(result.data.hits);
+  };
+
+  fetchData();
+}, []);*/
 
   function handleCreateButtonClick() {
     const nextTasks = tasks1.slice();
