@@ -171,10 +171,25 @@ const Tasks = () => {
             });
     }, []);
 
+    useEffect(() => {
+        // Make GET request to fetch data
+        axios
+            .get(API)
+            .then((response) => {
+                setData(response.data);
+                console.log(response.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
-    return (
+    /*return (
       <div>
             <h1>Posts</h1>
             <ul>
@@ -183,7 +198,7 @@ const Tasks = () => {
                 ))}
             </ul>
         </div>
-    );
+    );*/
 
   /*useEffect(() => {
   const fetchData = async () => {
@@ -206,24 +221,24 @@ const Tasks = () => {
   }
 
   function handleDeleteButtonClick() {
-    let nextTasks = tasks1.slice();
+    let nextTasks = data.tasks.slice();
     nextTasks = nextTasks.filter(task => task.isChecked === false);
     console.log(nextTasks);
     setTasks1(nextTasks);
   }
 
   function handleTaskClick(id) {
-    let result = tasks1.find(obj => obj.id === id);
+    let result = data.tasks.find(obj => obj.id === id);
     setEditingTaskId(result.id);
     console.log(result.id);
     console.log("cheese");
   }
 
   function handleCheckboxClick(id) {
-    let result = tasks1.find(obj => obj.id === id);
-    const taskIndex = tasks1.findIndex(x => x.id === id);
+    let result = data.tasks.find(obj => obj.id === id);
+    const taskIndex = data.tasks.findIndex(x => x.id === id);
 
-    let nextTasks = tasks1.slice();
+    let nextTasks = data.tasks.slice();
     nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setTasks1(nextTasks);
     console.log(nextTasks);
@@ -244,10 +259,10 @@ const Tasks = () => {
   const handleEnterDown = (id, newName) => {
     setEditingTaskId(0);
     
-    let result = tasks1.find(obj => obj.id === id);
-    const taskIndex = tasks1.findIndex(x => x.id === id);
+    let result = data.tasks.find(obj => obj.id === id);
+    const taskIndex = data.tasks.findIndex(x => x.id === id);
 
-    let nextTasks = tasks1.slice();
+    let nextTasks = data.tasks.slice();
     nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setTasks1(nextTasks);
     console.log(nextTasks);
@@ -274,14 +289,9 @@ const Tasks = () => {
         <MarkCompletedButton label={'Mark Completed'}/>
         <br />
         <List list={list} onClick={handleRemove} />
-        {tasks1.map(function(task) {
-          return (
-            <div>
-            <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
-            </div>
-          )
-        })}
-        
+        {data.tasks.map((task) => (
+                    <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
+                ))}
 
     </div>
   );
