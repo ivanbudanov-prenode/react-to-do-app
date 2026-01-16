@@ -8,6 +8,7 @@ let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'M
 
 /* endpoint for getting all tasks */
 app.get('/tasks', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.json({
     tasks
   });
