@@ -3,15 +3,45 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/status', (req, res) => {
+let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
+
+
+/* endpoint for getting all tasks */
+app.get('/tasks', (req, res) => {
   res.json({
-    status: 'Running',
-    timestamp: new Date().toISOString()
+    tasks
   });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+/* endpoint for adding a task */
+app.post('/tasks', (req, res) => {
+  console.log(req.body);
+  tasks.push(req.body);
+
+  res.json({
+    tasks
+  });
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+/* endpoint for updating a task */
+app.put('/tasks', (req, res) => {
+  console.log(req.body);
+  let result = tasks.find(obj => obj.id === req.body.id);
+  const taskIndex = tasks.findIndex(x => x.id === req.body.id);
+  tasks[taskIndex] = req.body;
+
+  res.json({
+    tasks
+  });
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
 /*const { createServer } = require('node:http');
 const hostname = '127.0.0.1';
