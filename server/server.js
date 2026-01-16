@@ -19,7 +19,6 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 /* endpoint for adding a task */
 app.post('/tasks', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   console.log(req.body);
   tasks.push(req.body);
 
@@ -32,7 +31,6 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 /* endpoint for updating a task */
 app.put('/tasks', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   console.log(req.body);
   let result = tasks.find(obj => obj.id === req.body.id);
   const taskIndex = tasks.findIndex(x => x.id === req.body.id);

@@ -15,8 +15,7 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import axios from "axios";
 
-const API = "http://127.0.0.1:3000/tasks";
-const API_TEST = "https://jsonplaceholder.typicode.com/posts";
+const API = "http://localhost:3000/tasks";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
   return <div>
@@ -159,10 +158,9 @@ const Tasks = () => {
   useEffect(() => {
         // Make GET request to fetch data
         axios
-            .get(API)
+            .get("https://jsonplaceholder.typicode.com//posts")
             .then((response) => {
                 setData(response.data);
-                console.log(response.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -175,16 +173,15 @@ const Tasks = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <h1>Posts</h1>
-            <ul>
-                {data.map((post) => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
-        </div>
+      <div>
+        <h1>Posts</h1>
+          <ul>
+            {data.map((post) => (
+              <li key={post.id}>{post.title}</li>
+            ))}
+          </ul>
+      </div>
     );
-
 
   /*useEffect(() => {
   const fetchData = async () => {
