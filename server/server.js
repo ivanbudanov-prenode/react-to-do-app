@@ -94,14 +94,22 @@ app.get('/tasks', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+
+async function createTask(newName) {
+  const newTask = {name: newName, id: 4, isEditing: true, isChecked: false};
+  const result = await myColl.insertOne(newTask);
+
+  return result.insertedId;
+}
+
 /* endpoint for adding a task */
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
   /*res.setHeader('Access-Control-Allow-Origin', '*');*/
   console.log(req.body);
-  tasks.push(req.body);
-
+  const data = await createTask(req.body.name);
+  console.log(data);
   res.json({
-    tasks
+    data
   });
 });
 
