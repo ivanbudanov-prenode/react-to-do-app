@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from 'express';
 
-import {MongoClient, ServerApiVersion} from 'mongodb';
+import {MongoClient, ServerApiVersion, ObjectId} from 'mongodb';
 
 const app = express();
 
@@ -115,17 +115,34 @@ app.post('/tasks', async (req, res) => {
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-/* endpoint for updating a task */
-app.put('/tasks', (req, res) => {
-  /*res.setHeader('Access-Control-Allow-Origin', '*');*/
-  console.log(req.body);
-  let result = tasks.find(obj => obj.id === req.body.id);
-  const taskIndex = tasks.findIndex(x => x.id === req.body.id);
-  tasks[taskIndex] = req.body;
+async function updateTask(updatedTask) {
+  console.log("updated task _id: " + updatedTask._id);
+  const newObjectId = new ObjectId(updatedTask.id);
+  const filter = { _id: newObjectId };
+  // update the value of the 'quantity' field to 5
+  const updateTask = {
+   $set: {
+      name: updatedTask.name,
+      isEditing: updatedTask.isEditing,
+      isChecked: updatedTask.isChecked,
+   },
+  };
+  const result = await myColl.updateOne(filter, updateTask);
+  return result;
 
+  /*return result.insertedId;*/
+}
+
+/* endpoint for updating a task */
+app.put('/tasks', async (req, res) => {
+  console.log(req.body);
+  const data = await updateTask(req.body);
+  console.log(data);
   res.json({
-    tasks
+    data
   });
+
+
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
