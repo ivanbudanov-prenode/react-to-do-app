@@ -1,7 +1,10 @@
-const express = require('express');
+import cors from "cors";
+import express from 'express';
+
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
 

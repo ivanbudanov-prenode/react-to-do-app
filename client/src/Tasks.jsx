@@ -272,10 +272,29 @@ const Tasks = () => {
     const taskIndex = data.findIndex(x => x.id === id);
 
     let nextTasks = data.slice();
-    nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
+    const newTask = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked};
+    
+    console.log("one");
+    axios
+            .put(API, newTask)
+            .then((response) => {
+                console.log("two");
+                nextTasks[taskIndex] = newTask;
+                setEditingTaskId(nextTasks.length + 1);
+                setData(nextTasks);
+                setLoading(false);
 
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
 
+    console.log("three");
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
     setData(nextTasks);
+    console.log("four");
     console.log(nextTasks);
   }
   /*function handleEnterDown(id, newName) {
