@@ -149,7 +149,7 @@ const initialList = [
 
 const Tasks = () => {
   const [list, setList] = React.useState(initialList);
-  const [tasks1, setTasks1] = useState(Array(0).fill(null));
+  /*const [tasks1, setTasks1] = useState(Array(0).fill(null));*/
   const [editingTaskId, setEditingTaskId] = useState(0);
   /*const [data, setData] = useState<Task[]>([]);*/
   const [data, setData] = useState([]);
@@ -161,23 +161,8 @@ const Tasks = () => {
         axios
             .get(API)
             .then((response) => {
-                setData(response.data);
-                console.log(response.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
-        // Make GET request to fetch data
-        axios
-            .get(API)
-            .then((response) => {
-                setData(response.data);
-                console.log(response.data);
+                setData(response.data.tasks);
+                console.log(response.data.tasks);
                 setLoading(false);
             })
             .catch((err) => {
@@ -188,6 +173,8 @@ const Tasks = () => {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
+
+    
 
     /*return (
       <div>
@@ -211,24 +198,46 @@ const Tasks = () => {
 }, []);*/
 
   function handleCreateButtonClick() {
-    const nextTasks = tasks1.slice();
+    const nextTasks = data.slice();
+    console.log("juice");
+    console.log("juice" + nextTasks);
     const nextId = findNewId();
-    nextTasks.push({name: 'Empty', id: nextTasks.length + 1, isEditing: true, isChecked: false})
-    setEditingTaskId(nextTasks.length + 1);
-    setTasks1(nextTasks);
+
+    const newTask = {name: 'Empty', id: nextTasks.length + 1, isEditing: true, isChecked: false};
+
+    
+
+        // Make POST request to send data
+        axios
+            .post(API, newTask)
+            .then((response) => {
+                nextTasks.push(newTask)
+                setEditingTaskId(nextTasks.length + 1);
+                setData(nextTasks);
+                setLoading(false);
+
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+
     console.log(nextTasks);
     console.log("hi");
   }
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   function handleDeleteButtonClick() {
-    let nextTasks = data.tasks.slice();
+    let nextTasks = data.slice();
     nextTasks = nextTasks.filter(task => task.isChecked === false);
     console.log(nextTasks);
-    setTasks1(nextTasks);
+    setData(nextTasks);
   }
 
   function handleTaskClick(id) {
-    let result = data.tasks.find(obj => obj.id === id);
+    let result = data.find(obj => obj.id === id);
     setEditingTaskId(result.id);
     console.log(result.id);
     console.log("cheese");
@@ -238,9 +247,9 @@ const Tasks = () => {
     let result = data.tasks.find(obj => obj.id === id);
     const taskIndex = data.tasks.findIndex(x => x.id === id);
 
-    let nextTasks = data.tasks.slice();
+    let nextTasks = data.slice();
     nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
-    setTasks1(nextTasks);
+    setData(nextTasks);
     console.log(nextTasks);
   }
 
@@ -259,12 +268,14 @@ const Tasks = () => {
   const handleEnterDown = (id, newName) => {
     setEditingTaskId(0);
     
-    let result = data.tasks.find(obj => obj.id === id);
-    const taskIndex = data.tasks.findIndex(x => x.id === id);
+    let result = data.find(obj => obj.id === id);
+    const taskIndex = data.findIndex(x => x.id === id);
 
-    let nextTasks = data.tasks.slice();
+    let nextTasks = data.slice();
     nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
-    setTasks1(nextTasks);
+
+
+    setData(nextTasks);
     console.log(nextTasks);
   }
   /*function handleEnterDown(id, newName) {
@@ -289,7 +300,7 @@ const Tasks = () => {
         <MarkCompletedButton label={'Mark Completed'}/>
         <br />
         <List list={list} onClick={handleRemove} />
-        {data.tasks.map((task) => (
+        {data && data?.map((task) => (
                     <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
                 ))}
 
