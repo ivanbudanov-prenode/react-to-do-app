@@ -35,7 +35,7 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
   /*const [isEditing, setIsEditing] = useState(false);*/
   const [currentLabel, setCurrentLabel] = useState(label);
 
-  const [state, setState] = useState("");
+  const [state, setState] = useState(label);
   const [name, setName] = useState("");
   
   const handleChange = (event) => {
