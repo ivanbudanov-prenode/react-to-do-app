@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import cors from "cors";
 import express from 'express';
 
@@ -30,10 +33,12 @@ app.configure(function() {
     //some other code
 });  */  
 
+/*console.log(process.env);*/
+
 
 let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
 
-const uri = "mongodb+srv://Ivan:password123password123@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0`;
   const client = new MongoClient(uri);
 const database = client.db('test_db');
     const myColl = database.collection("tasks");
@@ -44,7 +49,7 @@ const database = client.db('test_db');
     );
 
 async function runGetStarted() {
-  const uri = "mongodb+srv://Ivan:password123password123@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0";
+  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0`;
   const client = new MongoClient(uri);
   /*try {
     const database = client.db('sample_mflix');
