@@ -1,12 +1,29 @@
 import cors from "cors";
 import express from 'express';
 
+import {MongoClient, ServerApiVersion} from 'mongodb';
+
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
 let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
+
+async function runGetStarted() {
+  const uri = "mongodb+srv://Ivan:password123password123@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0";
+  const client = new MongoClient(uri);
+  try {
+    const database = client.db('sample_mflix');
+    const movies = database.collection('movies');
+    const query = { title: 'Back to the Future' };
+    const movie = await movies.findOne(query);
+    console.log(movie);
+  } finally {
+    await client.close();
+  }
+}
+runGetStarted().catch(console.dir);
 
 
 /* endpoint for getting all tasks */
