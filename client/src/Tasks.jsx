@@ -238,18 +238,19 @@ const Tasks = () => {
   }
 
   function handleTaskClick(id) {
-    let result = data.find(obj => obj.id === id);
-    setEditingTaskId(result.id);
-    console.log(result.id);
+    let result = data.find(obj => obj._id === id);
+    console.log(result);
+    setEditingTaskId(result._id);
+    console.log(result._id);
     console.log("cheese");
   }
 
   function handleCheckboxClick(id) {
-    let result = data.tasks.find(obj => obj.id === id);
-    const taskIndex = data.tasks.findIndex(x => x.id === id);
+    let result = data.tasks.find(obj => obj._id === id);
+    const taskIndex = data.tasks.findIndex(x => x._id === id);
 
     let nextTasks = data.slice();
-    nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
+    nextTasks[taskIndex] = {name: result.name, id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setData(nextTasks);
     console.log(nextTasks);
   }
@@ -261,7 +262,7 @@ const Tasks = () => {
   }
 
   function handleRemove(id) {
-    const newList = list.filter((item) => item.id !== id);
+    const newList = list.filter((item) => item._id !== id);
 
     setList(newList);
   }
@@ -269,11 +270,11 @@ const Tasks = () => {
   const handleEnterDown = (id, newName) => {
     setEditingTaskId(0);
     
-    let result = data.find(obj => obj.id === id);
-    const taskIndex = data.findIndex(x => x.id === id);
+    let result = data.find(obj => obj._id === id);
+    const taskIndex = data.findIndex(x => x._id === id);
 
     let nextTasks = data.slice();
-    const newTask = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked};
+    const newTask = {name: newName, id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked};
     
     console.log("one");
     axios
@@ -321,7 +322,7 @@ const Tasks = () => {
         <br />
         <List list={list} onClick={handleRemove} />
         {data && data?.map((task) => (
-                    <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
+                    <TaskWithCheckbox label={task.name} taskId={task._id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task._id)} onCheckboxClick={() => handleCheckboxClick(task._id)} onEnterDown={(newName) => handleEnterDown(task._id, newName)} />
                 ))}
 
     </div>
