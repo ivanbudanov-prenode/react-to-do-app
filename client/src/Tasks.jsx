@@ -161,8 +161,8 @@ const Tasks = () => {
         axios
             .get(API)
             .then((response) => {
-                setData(response.data.tasks);
-                console.log(response.data.tasks);
+                setData(response.data.data);
+                console.log("H" + response.data.data);
                 setLoading(false);
             })
             .catch((err) => {
