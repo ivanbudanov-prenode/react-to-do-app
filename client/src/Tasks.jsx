@@ -196,6 +196,7 @@ const Tasks = () => {
 
   fetchData();
 }, []);*/
+/* */
 
   function handleCreateButtonClick() {
     const nextTasks = data.slice();
