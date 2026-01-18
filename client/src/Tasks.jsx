@@ -160,9 +160,9 @@ const Tasks = () => {
   useEffect(() => {
         // Make GET request to fetch data
         axios
-            .get(API_NODE)
+            .get(API_PYTHON)
             .then((response) => {
-                setData(response.data.data);
+                setData(response.data.tasks);
                 console.log("H: ", response.data);
                 setLoading(false);
             })
@@ -211,7 +211,7 @@ const Tasks = () => {
 
         // Make POST request to send data
         axios
-            .post(API_NODE, newTask)
+            .post(API_PYTHON, newTask)
             .then((response) => {
                 console.log("response data id: ", response.data.id);
                 newTask.id = response.data.id;
@@ -281,7 +281,7 @@ const Tasks = () => {
     
     console.log("one");
     axios
-            .put(API_NODE, newTask)
+            .put(API_PYTHON, newTask)
             .then((response) => {
                 console.log("two");
                 nextTasks[taskIndex] = newTask;

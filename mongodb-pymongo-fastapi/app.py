@@ -61,12 +61,14 @@ class TaskCollection(BaseModel):
 @app.get(
     "/task",
     response_description="List first task",
-    response_model=TaskModel,
+    response_model=TaskCollection,
     response_model_by_alias=False,
 )
 async def list_tasks():
     #print(await tasks_collection.find())
-    return await tasks_collection.find_one()
+    #return await tasks_collection.find_one()
+    listResult = await tasks_collection.find().to_list(1000)
     #return await tasks_collection.find().to_list(1)
+    return {"tasks": listResult}
 
 
