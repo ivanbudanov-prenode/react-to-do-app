@@ -42,7 +42,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
   const client = new MongoClient(uri);
 const database = client.db('test_db');
     const myColl = database.collection("tasks");
-    const doc = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
+    const doc = [{name: 'John', isEditing: true, isChecked: false}, {name: 'Martha', isEditing: true, isChecked: false}, {name: 'Luke', isEditing: true, isChecked: false}];
     const result = await myColl.insertMany(doc);
     console.log(
       `A document was inserted with the _id: ${result.insertedId}`,
@@ -63,7 +63,7 @@ async function runGetStarted() {
   try {
     const database = client.db('test_db');
     const myColl = database.collection("tasks");
-    const doc = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
+    const doc = [{name: 'John', isEditing: true, isChecked: false}, {name: 'Martha', isEditing: true, isChecked: false}, {name: 'Luke', isEditing: true, isChecked: false}];
     const result = await myColl.insertMany(doc);
     console.log(
       `A document was inserted with the _id: ${result.insertedId}`,
@@ -101,7 +101,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 async function createTask(newName) {
-  const newTask = {name: newName, id: 4, isEditing: true, isChecked: false};
+  const newTask = {name: newName, isEditing: true, isChecked: false};
   const result = await myColl.insertOne(newTask);
 
   return result.insertedId;
@@ -112,9 +112,9 @@ app.post('/tasks', async (req, res) => {
   /*res.setHeader('Access-Control-Allow-Origin', '*');*/
   console.log(req.body);
   const data = await createTask(req.body.name);
-  console.log(data);
+  console.log("YES", data);
   res.json({
-    data
+    id: data
   });
 });
 
@@ -122,7 +122,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 async function updateTask(updatedTask) {
   console.log("updated task _id: " + updatedTask._id);
-  const newObjectId = new ObjectId(updatedTask.id);
+  const newObjectId = new ObjectId(updatedTask._id);
   const filter = { _id: newObjectId };
   // update the value of the 'quantity' field to 5
   const updateTask = {

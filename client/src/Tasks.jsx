@@ -160,9 +160,9 @@ const Tasks = () => {
   useEffect(() => {
         // Make GET request to fetch data
         axios
-            .get(API_PYTHON)
+            .get(API_NODE)
             .then((response) => {
-                setData([response.data]);
+                setData(response.data.data);
                 console.log("H: ", response.data);
                 setLoading(false);
             })
@@ -205,14 +205,16 @@ const Tasks = () => {
     console.log("juice" + nextTasks);
     const nextId = findNewId();
 
-    const newTask = {name: 'Empty', id: nextTasks.length + 1, isEditing: true, isChecked: false};
+    const newTask = {name: 'Empty', _id: 0, isEditing: true, isChecked: false};
 
     
 
         // Make POST request to send data
         axios
-            .post(API_PYTHON, newTask)
+            .post(API_NODE, newTask)
             .then((response) => {
+                console.log("response data id: ", response.data.id);
+                newTask._id = response.data.id;
                 nextTasks.push(newTask)
                 setEditingTaskId(nextTasks.length + 1);
                 setData(nextTasks);
@@ -251,7 +253,7 @@ const Tasks = () => {
     const taskIndex = data.tasks.findIndex(x => x._id === id);
 
     let nextTasks = data.slice();
-    nextTasks[taskIndex] = {name: result.name, id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked}
+    nextTasks[taskIndex] = {name: result.name, _id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setData(nextTasks);
     console.log(nextTasks);
   }
@@ -275,11 +277,11 @@ const Tasks = () => {
     const taskIndex = data.findIndex(x => x._id === id);
 
     let nextTasks = data.slice();
-    const newTask = {name: newName, id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked};
+    const newTask = {name: newName, _id: result._id, isEditing: result.isEditing, isChecked: !result.isChecked};
     
     console.log("one");
     axios
-            .put(API_PYTHON, newTask)
+            .put(API_NODE, newTask)
             .then((response) => {
                 console.log("two");
                 nextTasks[taskIndex] = newTask;
