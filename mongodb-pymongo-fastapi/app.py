@@ -52,7 +52,7 @@ class TaskModel(BaseModel):
     isEditing: bool = Field(...)
     isChecked: bool = Field(...)
 
-
+    class Config: from_attributes = True
 
 class TaskCollection(BaseModel):
     tasks: List[TaskModel]
@@ -65,6 +65,8 @@ class TaskCollection(BaseModel):
     response_model_by_alias=False,
 )
 async def list_tasks():
+    #print(await tasks_collection.find())
     return await tasks_collection.find_one()
+    #return await tasks_collection.find().to_list(1)
 
 
