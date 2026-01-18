@@ -80,7 +80,8 @@ async function getTasks() {
     console.log(result);
     return result;
   });
-  return result;
+  const cleanResult = result.map(({ _id, name, isEditing, isChecked }) => ({ id: _id, name, isEditing, isChecked }));
+  return cleanResult;
 }
 
 /* endpoint for getting all tasks */
@@ -90,7 +91,7 @@ app.get('/tasks', async (req, res) => {
     tasks
   });*/
   const data = await getTasks();
-  console.log(data);
+  /*console.log("cleanResult", data);*/
   res.json({
     data
   });
@@ -103,6 +104,8 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 async function createTask(newName) {
   const newTask = {name: newName, isEditing: true, isChecked: false};
   const result = await myColl.insertOne(newTask);
+  console.log("newTask: ", newTask);
+  console.log("QQQ inserted new task", result);
 
   return result.insertedId;
 }
@@ -121,8 +124,8 @@ app.post('/tasks', async (req, res) => {
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 async function updateTask(updatedTask) {
-  console.log("updated task _id: " + updatedTask._id);
-  const newObjectId = new ObjectId(updatedTask._id);
+  console.log("updated task _id: " + updatedTask.id);
+  const newObjectId = new ObjectId(updatedTask.id);
   const filter = { _id: newObjectId };
   // update the value of the 'quantity' field to 5
   const updateTask = {
@@ -133,7 +136,8 @@ async function updateTask(updatedTask) {
    },
   };
   const result = await myColl.updateOne(filter, updateTask);
-  return result;
+  const cleanResult = {id: result._id, name: result.name, isEditing: result.isEditing, isChecked: result.isChecked};
+  return cleanResult;
 
   /*return result.insertedId;*/
 }
