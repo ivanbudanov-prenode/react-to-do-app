@@ -81,6 +81,10 @@ class TaskUpdate(BaseModel):
 
     class Config: from_attributes = True
 
+class TaskOut(BaseModel):
+    data: TaskModel
+    class Config: from_attributes = True
+
 @app.put(
     "/tasks",
     response_description="Update task",
@@ -90,5 +94,6 @@ class TaskUpdate(BaseModel):
 async def update_task(updated_task: TaskUpdate):
     print("updated_task: ", updated_task)
     update_result = await tasks_collection.update_one({"_id": ObjectId(updated_task.id)}, {"$set": updated_task.dict(exclude={"id"})})
-    return {"data": update_result}
+    print("update_result: ", update_result)
+    return {**updated_task.dict()}
 
