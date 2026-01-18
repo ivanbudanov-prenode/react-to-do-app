@@ -15,7 +15,8 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import axios from "axios";
 
-const API = "http://localhost:3000/tasks";
+const API_NODE = "http://localhost:3000/tasks";
+const API_PYTHON = "http://localhost:8000/task";
 const API_TEST = "https://jsonplaceholder.typicode.com/posts";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
@@ -159,10 +160,10 @@ const Tasks = () => {
   useEffect(() => {
         // Make GET request to fetch data
         axios
-            .get(API)
+            .get(API_PYTHON)
             .then((response) => {
-                setData(response.data.data);
-                console.log("H" + response.data.data);
+                setData([response.data]);
+                console.log("H: ", response.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -210,7 +211,7 @@ const Tasks = () => {
 
         // Make POST request to send data
         axios
-            .post(API, newTask)
+            .post(API_PYTHON, newTask)
             .then((response) => {
                 nextTasks.push(newTask)
                 setEditingTaskId(nextTasks.length + 1);
@@ -278,7 +279,7 @@ const Tasks = () => {
     
     console.log("one");
     axios
-            .put(API, newTask)
+            .put(API_PYTHON, newTask)
             .then((response) => {
                 console.log("two");
                 nextTasks[taskIndex] = newTask;
