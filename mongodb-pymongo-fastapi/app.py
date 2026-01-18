@@ -59,7 +59,7 @@ class TaskCollection(BaseModel):
     class Config: from_attributes = True
 
 @app.get(
-    "/task",
+    "/tasks",
     response_description="List first task",
     response_model=TaskCollection,
     response_model_by_alias=False,
@@ -71,4 +71,22 @@ async def list_tasks():
     #return await tasks_collection.find().to_list(1)
     return {"data": listResult}
 
+
+
+'''class TaskCreate(BaseModel):
+    name: str = Field(...)
+    isEditing: bool = Field(...)
+    isChecked: bool = Field(...)
+
+    class Config: from_attributes = True
+
+@app.put(
+    "/tasks",
+    response_description="List first task",
+    response_model=TaskCollection,
+    response_model_by_alias=False,
+)
+async def list_tasks():
+    listResult = await tasks_collection.find().to_list(1000)
+    return {"data": listResult}'''
 
