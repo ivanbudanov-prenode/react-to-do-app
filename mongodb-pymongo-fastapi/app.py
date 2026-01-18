@@ -73,7 +73,8 @@ async def list_tasks():
 
 
 
-'''class TaskCreate(BaseModel):
+class TaskUpdate(BaseModel):
+    id: str = Field(...)
     name: str = Field(...)
     isEditing: bool = Field(...)
     isChecked: bool = Field(...)
@@ -82,11 +83,12 @@ async def list_tasks():
 
 @app.put(
     "/tasks",
-    response_description="List first task",
-    response_model=TaskCollection,
+    response_description="Update task",
+    response_model=TaskModel,
     response_model_by_alias=False,
 )
-async def list_tasks():
-    listResult = await tasks_collection.find().to_list(1000)
-    return {"data": listResult}'''
+async def update_task(updated_task: TaskUpdate):
+    print("updated_task: ", updated_task)
+    update_result = await tasks_collection.update_one({"_id": ObjectId(updated_task.id)}, {"$set": updated_task.dict(exclude={"id"})})
+    return {"data": update_result}
 
