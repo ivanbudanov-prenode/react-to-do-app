@@ -285,7 +285,7 @@ const Tasks = () => {
             .then((response) => {
                 console.log("two");
                 nextTasks[taskIndex] = newTask;
-                setEditingTaskId(nextTasks.length + 1);
+                setEditingTaskId(0);
                 setData(nextTasks);
                 setLoading(false);
 

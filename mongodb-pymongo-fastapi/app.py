@@ -88,12 +88,12 @@ class TaskOut(BaseModel):
 @app.put(
     "/tasks",
     response_description="Update task",
-    response_model=TaskModel,
+    response_model=TaskOut,
     response_model_by_alias=False,
 )
 async def update_task(updated_task: TaskUpdate):
     print("updated_task: ", updated_task)
     update_result = await tasks_collection.update_one({"_id": ObjectId(updated_task.id)}, {"$set": updated_task.dict(exclude={"id"})})
     print("update_result: ", update_result)
-    return {**updated_task.dict()}
+    return {"data": {"id": PyObjectId(updated_task.id), "name": updated_task.name, "isEditing": updated_task.isEditing, "isChecked": updated_task.isChecked}}
 
