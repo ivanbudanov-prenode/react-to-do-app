@@ -55,7 +55,7 @@ class TaskModel(BaseModel):
     class Config: from_attributes = True
 
 class TaskCollection(BaseModel):
-    tasks: List[TaskModel]
+    data: List[TaskModel]
     class Config: from_attributes = True
 
 @app.get(
@@ -69,6 +69,6 @@ async def list_tasks():
     #return await tasks_collection.find_one()
     listResult = await tasks_collection.find().to_list(1000)
     #return await tasks_collection.find().to_list(1)
-    return {"tasks": listResult}
+    return {"data": listResult}
 
 
