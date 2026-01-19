@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY . /code/
 
 #CMD ["fastapi", "run", "app.py", "--port", "80"]
-CMD ["uvicorn", "app:app", "--reload"]
+CMD ["uvicorn", "app:app", "--reload", "--host", "0.0.0.0"]
