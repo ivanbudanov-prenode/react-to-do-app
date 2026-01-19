@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
@@ -79,41 +78,39 @@ const Tasks = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-        axios
-            .get(API_NODE)
-            .then((response) => {
-                setData(response.data.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
+    axios
+      .get(API_PYTHON)
+      .then((response) => {
+        setData(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
 
   function handleCreateButtonClick() {
     const nextTasks = data.slice();
-
     const newTask = {name: 'Empty', id: 0, isEditing: true, isChecked: false};
 
-        axios
-            .post(API_NODE, newTask)
-            .then((response) => {
-                newTask.id = response.data.id;
-                nextTasks.push(newTask)
-                setEditingTaskId(nextTasks.length + 1);
-                setData(nextTasks);
-                setLoading(false);
-
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
+    axios
+      .post(API_PYTHON, newTask)
+      .then((response) => {
+        newTask.id = response.data.id;
+        nextTasks.push(newTask)
+        setEditingTaskId(nextTasks.length + 1);
+        setData(nextTasks);
+        setLoading(false);
+    })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }
 
   if (loading) return <div>Loading...</div>;
@@ -133,7 +130,6 @@ const Tasks = () => {
   function handleCheckboxClick(id) {
     let result = data.tasks.find(obj => obj.id === id);
     const taskIndex = data.tasks.findIndex(x => x.id === id);
-
     let nextTasks = data.slice();
     nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setData(nextTasks);
@@ -148,18 +144,18 @@ const Tasks = () => {
     let nextTasks = data.slice();
     const newTask = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked};
     axios
-            .put(API_NODE, newTask)
-            .then((response) => {
-                nextTasks[taskIndex] = newTask;
-                setEditingTaskId(0);
-                setData(nextTasks);
-                setLoading(false);
+      .put(API_PYTHON, newTask)
+      .then((response) => {
+        nextTasks[taskIndex] = newTask;
+        setEditingTaskId(0);
+        setData(nextTasks);
+        setLoading(false);
 
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;

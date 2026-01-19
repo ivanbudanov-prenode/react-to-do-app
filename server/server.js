@@ -1,44 +1,19 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import cors from "cors";
 import express from 'express';
-
 import {MongoClient, ServerApiVersion, ObjectId} from 'mongodb';
 
 const app = express();
-
-
 app.use(express.json());
 app.use(cors());
 
-let tasks = [{name: 'John', id: 1, isEditing: true, isChecked: false}, {name: 'Martha', id: 2, isEditing: true, isChecked: false}, {name: 'Luke', id: 3, isEditing: true, isChecked: false}];
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0`;
-  const client = new MongoClient(uri);
+const client = new MongoClient(uri);
 const database = client.db('test_db');
-    const myColl = database.collection("tasks");
-    const doc = [{name: 'John', isEditing: true, isChecked: false}, {name: 'Martha', isEditing: true, isChecked: false}, {name: 'Luke', isEditing: true, isChecked: false}];
-    const result = await myColl.insertMany(doc);
-    console.log(
-      `A document was inserted with the _id: ${result.insertedId}`,
-    );
-
-async function runGetStarted() {
-  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0`;
-  const client = new MongoClient(uri);
-  try {
-    const database = client.db('test_db');
-    const myColl = database.collection("tasks");
-    const doc = [{name: 'John', isEditing: true, isChecked: false}, {name: 'Martha', isEditing: true, isChecked: false}, {name: 'Luke', isEditing: true, isChecked: false}];
-    const result = await myColl.insertMany(doc);
-    console.log(
-      `A document was inserted with the _id: ${result.insertedId}`,
-    );
-  } finally {
-    await client.close();
-  }
-}
+const myColl = database.collection("tasks");
+const doc = [{name: 'John', isEditing: true, isChecked: false}, {name: 'Martha', isEditing: true, isChecked: false}, {name: 'Luke', isEditing: true, isChecked: false}];
+const result = await myColl.insertMany(doc);
 
 async function getTasks() {
   const result = await database.collection("tasks").find({}).toArray(function(err, result) {
@@ -64,16 +39,11 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 async function createTask(newName) {
   const newTask = {name: newName, isEditing: true, isChecked: false};
   const result = await myColl.insertOne(newTask);
-  console.log("newTask: ", newTask);
-  console.log("QQQ inserted new task", result);
-
   return result.insertedId;
 }
 
 app.post('/tasks', async (req, res) => {
-  console.log(req.body);
   const data = await createTask(req.body.name);
-  console.log("YES", data);
   res.json({
     id: data
   });
@@ -82,7 +52,6 @@ app.post('/tasks', async (req, res) => {
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 async function updateTask(updatedTask) {
-  console.log("updated task _id: " + updatedTask.id);
   const newObjectId = new ObjectId(updatedTask.id);
   const filter = { _id: newObjectId };
   const updateTask = {
@@ -99,9 +68,7 @@ async function updateTask(updatedTask) {
 }
 
 app.put('/tasks', async (req, res) => {
-  console.log(req.body);
   const data = await updateTask(req.body);
-  console.log(data);
   res.json({
     data
   });
