@@ -26,10 +26,7 @@ const CustomCheckbox = ( { onCheckboxClick}) => {
 }
 
 const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnterDown }) => {
-  const [currentLabel, setCurrentLabel] = useState(label);
-
   const [state, setState] = useState(label);
-  const [name, setName] = useState("");
   
   const handleChange = (event) => {
     setState(event.target.value);
@@ -57,8 +54,6 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
   }
 }
 
-const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
-
 const CreateButton = ({ label, onCreateButtonClick }) => {
   return <div><Button variant="contained" onClick={onCreateButtonClick}>{label}</Button></div>
 }
@@ -76,23 +71,8 @@ const MarkCompletedButton = ({ label }) => {
   return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
 }
 
-const initialList = [
-  {
-    id: 'a',
-    firstname: 'Robin',
-    lastname: 'Wieruch',
-    year: 1988,
-  },
-  {
-    id: 'b',
-    firstname: 'Dave',
-    lastname: 'Davidds',
-    year: 1990,
-  },
-];
 
 const Tasks = () => {
-  const [list, setList] = React.useState(initialList);
   const [editingTaskId, setEditingTaskId] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -159,12 +139,6 @@ const Tasks = () => {
     setData(nextTasks);
   }
 
-  function handleRemove(id) {
-    const newList = list.filter((item) => item.id !== id);
-
-    setList(newList);
-  }
-
   const handleEnterDown = (id, newName) => {
     setEditingTaskId(0);
     
@@ -189,8 +163,6 @@ const Tasks = () => {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-    setData(nextTasks);
-    console.log(nextTasks);
   }
 
   return (
@@ -202,7 +174,6 @@ const Tasks = () => {
         <br />
         <MarkCompletedButton label={'Mark Completed'}/>
         <br />
-        <List list={list} onClick={handleRemove} />
         {data && data?.map((task) => (
                     <TaskWithCheckbox label={task.name} taskId={task.id} editingTaskId={editingTaskId} onListItemClick={() => handleTaskClick(task.id)} onCheckboxClick={() => handleCheckboxClick(task.id)} onEnterDown={(newName) => handleEnterDown(task.id, newName)} />
                 ))}
