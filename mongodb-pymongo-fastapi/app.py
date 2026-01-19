@@ -30,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = AsyncMongoClient(os.environ["MONGODB_URL"],server_api=pymongo.server_api.ServerApi(version="1", strict=True,deprecation_errors=True))
+client = AsyncMongoClient(MONGODB_URL,server_api=pymongo.server_api.ServerApi(version="1", strict=True,deprecation_errors=True))
 db = client.test_db
 print("db: ")
 print(db)
