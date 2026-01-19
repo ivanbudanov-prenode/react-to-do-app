@@ -1,8 +1,6 @@
 import React from "react";
-
 import {Component} from 'react';
 import { useEffect, useState } from 'react';
-/*import Button from '@material-ui/core/Button'; */
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Box from "@mui/material/Box";
@@ -17,7 +15,6 @@ import axios from "axios";
 
 const API_NODE = "http://localhost:3000/tasks";
 const API_PYTHON = "http://localhost:8000/tasks";
-const API_TEST = "https://jsonplaceholder.typicode.com/posts";
 
 const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
   return <div>
@@ -33,7 +30,6 @@ const CustomCheckbox = ( { onCheckboxClick}) => {
 }
 
 const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnterDown }) => {
-  /*const [isEditing, setIsEditing] = useState(false);*/
   const [currentLabel, setCurrentLabel] = useState(label);
 
   const [state, setState] = useState(label);
@@ -42,12 +38,6 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
   const handleChange = (event) => {
     setState(event.target.value);
   };
-
-
-  /*function handleEnterDown2() {
-    newLabel = 
-    setCurrentLabel
-  }*/
 
   if(taskId == editingTaskId) {
   return <div>
@@ -141,26 +131,16 @@ const initialList = [
   },
 ];
 
-/*type Task = {
-  name: string;
-  id: string;
-  isEditing: string;
-  isChecked: string;
-};*/
-
 const Tasks = () => {
   const [list, setList] = React.useState(initialList);
-  /*const [tasks1, setTasks1] = useState(Array(0).fill(null));*/
   const [editingTaskId, setEditingTaskId] = useState(0);
-  /*const [data, setData] = useState<Task[]>([]);*/
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-        // Make GET request to fetch data
         axios
-            .get(API_PYTHON)
+            .get(API_NODE)
             .then((response) => {
                 setData(response.data.data);
                 console.log("H: ", response.data);
@@ -175,29 +155,6 @@ const Tasks = () => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
-    
-
-    /*return (
-      <div>
-            <h1>Posts</h1>
-            <ul>
-                {data.tasks.map((post) => (
-                    <li key={post.id}>{post.name}</li>
-                ))}
-            </ul>
-        </div>
-    );*/
-
-  /*useEffect(() => {
-  const fetchData = async () => {
-    const result = await axios(`${API}`);
-
-    setData(result.data.hits);
-  };
-
-  fetchData();
-}, []);*/
-/* */
 
   function handleCreateButtonClick() {
     const nextTasks = data.slice();
@@ -207,11 +164,8 @@ const Tasks = () => {
 
     const newTask = {name: 'Empty', id: 0, isEditing: true, isChecked: false};
 
-    
-
-        // Make POST request to send data
         axios
-            .post(API_PYTHON, newTask)
+            .post(API_NODE, newTask)
             .then((response) => {
                 console.log("response data id: ", response.data.id);
                 newTask.id = response.data.id;
@@ -281,7 +235,7 @@ const Tasks = () => {
     
     console.log("one");
     axios
-            .put(API_PYTHON, newTask)
+            .put(API_NODE, newTask)
             .then((response) => {
                 console.log("two");
                 nextTasks[taskIndex] = newTask;
@@ -302,17 +256,6 @@ const Tasks = () => {
     console.log("four");
     console.log(nextTasks);
   }
-  /*function handleEnterDown(id, newName) {
-    setEditingTaskId(0);
-    
-    let result = tasks1.find(obj => obj.id === id);
-    const taskIndex = tasks1.findIndex(x => x.id === id);
-
-    let nextTasks = tasks1.slice();
-    nextTasks[taskIndex] = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
-    setTasks1(nextTasks);
-    console.log(nextTasks);
-  }*/
 
   return (
     <div> 

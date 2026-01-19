@@ -16,7 +16,6 @@ from pymongo import ReturnDocument
 
 import os
 
-print("hello")
 MONGODB_URL = "mongodb+srv://Ivan:password123password123@cluster0.8uzkrrx.mongodb.net/?appName=Cluster0"
 
 app = FastAPI()
@@ -65,10 +64,7 @@ class TaskCollection(BaseModel):
     response_model_by_alias=False,
 )
 async def list_tasks():
-    #print(await tasks_collection.find())
-    #return await tasks_collection.find_one()
     listResult = await tasks_collection.find().to_list(1000)
-    #return await tasks_collection.find().to_list(1)
     return {"data": listResult}
 
 
