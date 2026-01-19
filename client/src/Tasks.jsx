@@ -11,23 +11,23 @@ import axios from "axios";
 const API_NODE = "http://localhost:3000/tasks";
 const API_PYTHON = "http://localhost:8000/tasks";
 
-const TaskWithCheckbox = ( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) => {
+function TaskWithCheckbox( { label, taskId, editingTaskId, onListItemClick, onCheckboxClick, onEnterDown} ) {
   return <div>
     <CustomCheckbox onCheckboxClick={onCheckboxClick} />
     <CustomListItem label={label} taskId={taskId} editingTaskId={editingTaskId} onListItemClick={onListItemClick} onEnterDown={onEnterDown} />
   </div>
 }
 
-const CustomCheckbox = ( { onCheckboxClick}) => {
+function CustomCheckbox( { onCheckboxClick}) {
   return <div>
     <Checkbox onClick={onCheckboxClick} />
   </div>
 }
 
-const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnterDown }) => {
+function CustomListItem( { label, taskId, editingTaskId, onListItemClick, onEnterDown }) {
   const [state, setState] = useState(label);
   
-  const handleChange = (event) => {
+  function handleChange(event) {
     setState(event.target.value);
   };
 
@@ -53,15 +53,15 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
   }
 }
 
-const CreateButton = ({ label, onCreateButtonClick }) => {
+function CreateButton ({ label, onCreateButtonClick }) {
   return <div><Button variant="contained" onClick={onCreateButtonClick}>{label}</Button></div>
 }
 
-const DeleteButton = ({ label, onDeleteButtonClick }) => {
+function DeleteButton ({ label, onDeleteButtonClick }) {
   return <div><Button variant="contained" onClick={onDeleteButtonClick}>{label}</Button></div>
 }
 
-const MarkCompletedButton = ({ label }) => {
+function MarkCompletedButton({ label }) {
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
@@ -71,7 +71,7 @@ const MarkCompletedButton = ({ label }) => {
 }
 
 
-const Tasks = () => {
+export default function Tasks() {
   const [editingTaskId, setEditingTaskId] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,7 +135,7 @@ const Tasks = () => {
     setData(nextTasks);
   }
 
-  const handleEnterDown = (id, newName) => {
+  function handleEnterDown(id, newName) {
     setEditingTaskId(0);
     
     let result = data.find(obj => obj.id === id);
@@ -177,5 +177,3 @@ const Tasks = () => {
     </div>
   );
 };
-
-export default Tasks;
