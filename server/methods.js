@@ -2,11 +2,7 @@ import { myColl } from './db.js';
 import {ObjectId} from 'mongodb';
 
 async function getTasks() {
-  const result = await myColl.find({}).toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-    return result;
-  });
+  const result = await myColl.find().toArray();
   const cleanResult = result.map(({ _id, name, isEditing, isChecked }) => ({ id: _id, name, isEditing, isChecked }));
   return cleanResult;
 }
