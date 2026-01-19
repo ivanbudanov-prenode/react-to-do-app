@@ -79,7 +79,7 @@ export default function Tasks() {
 
   useEffect(() => {
     axios
-      .get(API_PYTHON)
+      .get(API_NODE)
       .then((response) => {
         setData(response.data.data);
         setLoading(false);
@@ -99,7 +99,7 @@ export default function Tasks() {
     const newTask = {name: 'Empty', id: 0, isEditing: true, isChecked: false};
 
     axios
-      .post(API_PYTHON, newTask)
+      .post(API_NODE, newTask)
       .then((response) => {
         newTask.id = response.data.id;
         nextTasks.push(newTask)
@@ -144,7 +144,7 @@ export default function Tasks() {
     let nextTasks = data.slice();
     const newTask = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked};
     axios
-      .put(API_PYTHON, newTask)
+      .put(API_NODE, newTask)
       .then((response) => {
         nextTasks[taskIndex] = newTask;
         setEditingTaskId(0);
