@@ -1,14 +1,10 @@
 import React from "react";
-import {Component} from 'react';
 import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import axios from "axios";
@@ -64,21 +60,10 @@ const CustomListItem = ( { label, taskId, editingTaskId, onListItemClick, onEnte
 const tasks = [ {name: 'Joe', id: '0',}, {name: 'Janet', id: '1',}];
 
 const CreateButton = ({ label, onCreateButtonClick }) => {
-  const [isClicked, setIsClicked] = useState(false);
-
-  function handleClick() {
-    setIsClicked(!isClicked);
-    console.log(isClicked);
-  }
   return <div><Button variant="contained" onClick={onCreateButtonClick}>{label}</Button></div>
 }
 
 const DeleteButton = ({ label, onDeleteButtonClick }) => {
-  const [isClicked, setIsClicked] = useState(false);
-
-  function handleClick() {
-    setIsClicked(!isClicked);
-  }
   return <div><Button variant="contained" onClick={onDeleteButtonClick}>{label}</Button></div>
 }
 
@@ -89,31 +74,6 @@ const MarkCompletedButton = ({ label }) => {
     setIsClicked(!isClicked);
   }
   return <div><Button variant="contained" onClick={handleClick}>{label}</Button></div>
-}
-
-const CustomList = () => {
-  return <div>
-    <List>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <ListItemText
-            primary="Task 1" />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <ListItemText
-            primary="Task 2" />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <ListItemText
-            primary="Task 3" />
-        </ListItemButton>
-      </ListItem>
-    </List>
-  </div>
 }
 
 const initialList = [
@@ -143,7 +103,6 @@ const Tasks = () => {
             .get(API_NODE)
             .then((response) => {
                 setData(response.data.data);
-                console.log("H: ", response.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -158,16 +117,12 @@ const Tasks = () => {
 
   function handleCreateButtonClick() {
     const nextTasks = data.slice();
-    console.log("juice");
-    console.log("juice" + nextTasks);
-    const nextId = findNewId();
 
     const newTask = {name: 'Empty', id: 0, isEditing: true, isChecked: false};
 
         axios
             .post(API_NODE, newTask)
             .then((response) => {
-                console.log("response data id: ", response.data.id);
                 newTask.id = response.data.id;
                 nextTasks.push(newTask)
                 setEditingTaskId(nextTasks.length + 1);
@@ -179,9 +134,6 @@ const Tasks = () => {
                 setError(err.message);
                 setLoading(false);
             });
-
-    console.log(nextTasks);
-    console.log("hi");
   }
 
   if (loading) return <div>Loading...</div>;
@@ -190,16 +142,12 @@ const Tasks = () => {
   function handleDeleteButtonClick() {
     let nextTasks = data.slice();
     nextTasks = nextTasks.filter(task => task.isChecked === false);
-    console.log(nextTasks);
     setData(nextTasks);
   }
 
   function handleTaskClick(id) {
     let result = data.find(obj => obj.id === id);
-    console.log(result);
     setEditingTaskId(result.id);
-    console.log(result.id);
-    console.log("cheese");
   }
 
   function handleCheckboxClick(id) {
@@ -209,13 +157,6 @@ const Tasks = () => {
     let nextTasks = data.slice();
     nextTasks[taskIndex] = {name: result.name, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked}
     setData(nextTasks);
-    console.log(nextTasks);
-  }
-
-  function findNewId() {
-    const ids = tasks.map(({id}) => id);
-    const nextId = Math.max(...ids) + 1;
-    return nextId;
   }
 
   function handleRemove(id) {
@@ -232,12 +173,9 @@ const Tasks = () => {
 
     let nextTasks = data.slice();
     const newTask = {name: newName, id: result.id, isEditing: result.isEditing, isChecked: !result.isChecked};
-    
-    console.log("one");
     axios
             .put(API_NODE, newTask)
             .then((response) => {
-                console.log("two");
                 nextTasks[taskIndex] = newTask;
                 setEditingTaskId(0);
                 setData(nextTasks);
@@ -249,11 +187,9 @@ const Tasks = () => {
                 setLoading(false);
             });
 
-    console.log("three");
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     setData(nextTasks);
-    console.log("four");
     console.log(nextTasks);
   }
 
